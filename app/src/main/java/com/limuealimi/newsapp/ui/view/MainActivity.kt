@@ -1,8 +1,11 @@
-package com.limuealimi.newsapp
-import androidx.appcompat.app.AppCompatActivity
+package com.limuealimi.newsapp.ui.view
+
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import com.limuealimi.newsapp.R
 import com.limuealimi.newsapp.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

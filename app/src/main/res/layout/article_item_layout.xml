@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/cardstyle">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_cardimage"
+            app:layout_constraintBottom_toTopOf="@id/half"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/half"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp"
+            android:text="Kan ikke kares til cerdens beste apiller"
+            android:textColor="#C9000000"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/verticalStart"
+            app:layout_constraintRight_toLeftOf="@+id/verticalEnd"
+            app:layout_constraintTop_toBottomOf="@id/half" />
+
+        <ImageView
+            android:id="@+id/bookmark"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_bookmark_notmarked"
+            app:layout_constraintLeft_toRightOf="@id/verticalEnd"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/half" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.03" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KomZakDroid"
+            android:textAllCaps="true"
+            android:textColor="#BE838383"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/secondHalf"
+            app:layout_constraintLeft_toRightOf="@id/verticalStart"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <TextView
+            android:id="@+id/posted_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="10.10.2010"
+            android:textColor="#BE838383"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/secondHalf"
+            app:layout_constraintLeft_toRightOf="@id/author"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/secondHalf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:text="No matter how plain a woman may be, if truth and honesty are written across her face, she will be beautiful."
+            android:textColor="#BE838383"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/verticalStart"
+            app:layout_constraintRight_toLeftOf="@id/verticalClose"
+            app:layout_constraintTop_toBottomOf="@id/secondHalf" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.97" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
