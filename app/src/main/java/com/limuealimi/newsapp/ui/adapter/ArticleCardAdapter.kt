@@ -18,7 +18,7 @@ class ArticleCardAdapter : RecyclerView.Adapter<ArticleCardAdapter.GetCardViewHo
         val diffCallback = EventDiffUtilsCallBack(events, newViewItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         events.addAll(newViewItems)
-       diffResult.dispatchUpdatesTo(this)/*
+        diffResult.dispatchUpdatesTo(this)/*
         events = newViewItems as ArrayList<Article>
         notifyDataSetChanged()*/
     }
@@ -53,7 +53,7 @@ class ArticleCardAdapter : RecyclerView.Adapter<ArticleCardAdapter.GetCardViewHo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         GetCardViewHolder(
-            ArticleItemLayoutBinding.inflate(LayoutInflater.from(parent.context)),
+            ArticleItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             listener
         )
 
