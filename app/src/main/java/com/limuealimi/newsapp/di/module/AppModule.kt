@@ -10,6 +10,7 @@ import com.limuealimi.newsapp.data.useCaseImpl.ArticleCardUseCaseImpl
 import com.limuealimi.newsapp.domain.repository.MainRepository
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
 import com.limuealimi.newsapp.presentation.home.HomeViewModel
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -51,7 +52,6 @@ val apiModule = module {
     single<ApiService> {
         get<Retrofit>().create(ApiService::class.java)
     }
-
 }
 
 val singletonModule = module {
@@ -59,6 +59,6 @@ val singletonModule = module {
         MainRepositoryImpl(get<ApiService>())
     }
     single<ArticleCardUseCase> {
-        ArticleCardUseCaseImpl(get<MainRepository>())
+        ArticleCardUseCaseImpl(get<MainRepository>(), Dispatchers.IO)
     }
 }

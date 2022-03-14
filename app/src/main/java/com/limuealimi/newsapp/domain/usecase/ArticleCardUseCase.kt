@@ -4,5 +4,4 @@ import com.limuealimi.newsapp.domain.model.Article
 
 interface ArticleCardUseCase {
     suspend fun loadArticlesData(): Result<List<Article>>
-
 }

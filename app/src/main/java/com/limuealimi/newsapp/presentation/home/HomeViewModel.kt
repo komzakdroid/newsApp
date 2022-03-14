@@ -8,7 +8,6 @@ import com.limuealimi.newsapp.domain.model.Article
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
 import com.limuealimi.newsapp.utils.State
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class HomeViewModel(
     private val useCase: ArticleCardUseCase
@@ -24,14 +23,23 @@ class HomeViewModel(
     fun getArticlesData() {
         viewModelScope.launch {
             _articleData.value = State.Loading
-            try {
-                val articles = useCase.loadArticlesData()
-                val state =
-                    if (articles.isFailure) State.Empty else State.Content(articles)
-                _articleData.value = state
-            } catch (e: Exception) {
-                _articleData.value = State.Error(e.message)
-            }
+            val articles = useCase.loadArticlesData()
+            _articleData.value =
+                when {
+                    articles.isFailure -> State.Error(articles.exceptionOrNull())
+                    articles.getOrNull()?.isEmpty() == true -> State.Empty
+                    else ->
+                        State.Content(articles)
+
+                    /* try {
+                         val articles = useCase.loadArticlesData()
+                         val state =
+                             if (articles.isFailure) State.Empty else State.Content(articles)
+                         _articleData.value = state
+                     } catch (e: Exception) {
+                         _articleData.value = State.Error(e.message)
+                     }*/
+                }
         }
     }
 }
