@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.ui
+package com.limuealimi.newsapp.presentation.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,18 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.limuealimi.newsapp.domain.model.Article
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
 import com.limuealimi.newsapp.utils.State
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
-import java.util.*
 
-class MainViewModel(
+class HomeViewModel(
     private val useCase: ArticleCardUseCase
 ) : ViewModel() {
 
-    private val _articleData = MutableLiveData<State<List<Article>>>()
-    val articleData: LiveData<State<List<Article>>> = _articleData
+    private val _articleData = MutableLiveData<State<Result<List<Article>>>>()
+    val articleData: LiveData<State<Result<List<Article>>>> = _articleData
 
     init {
         _articleData.value = State.Empty
@@ -29,7 +26,8 @@ class MainViewModel(
             _articleData.value = State.Loading
             try {
                 val articles = useCase.loadArticlesData()
-                val state = if (articles.isEmpty()) State.Empty else State.Content(articles)
+                val state =
+                    if (articles.isFailure) State.Empty else State.Content(articles)
                 _articleData.value = state
             } catch (e: Exception) {
                 _articleData.value = State.Error(e.message)

@@ -4,5 +4,5 @@ import com.limuealimi.newsapp.domain.model.Article
 
 
 interface MainRepository {
-    suspend fun getArticles(): List<Article>
+    suspend fun getArticles(): Result<List<Article>>
 }

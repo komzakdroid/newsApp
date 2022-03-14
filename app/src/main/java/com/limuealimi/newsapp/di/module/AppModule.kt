@@ -9,25 +9,24 @@ import com.limuealimi.newsapp.data.repository.MainRepositoryImpl
 import com.limuealimi.newsapp.data.useCaseImpl.ArticleCardUseCaseImpl
 import com.limuealimi.newsapp.domain.repository.MainRepository
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
-import com.limuealimi.newsapp.ui.MainViewModel
+import com.limuealimi.newsapp.presentation.home.HomeViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 val viewModels = module {
     viewModel {
-        MainViewModel(get())
+        HomeViewModel(get())
     }
 }
 
 val apiModule = module {
     single<HttpLoggingInterceptor>() {
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC)
         loggingInterceptor
     }
     single<OkHttpClient> {
@@ -35,8 +34,6 @@ val apiModule = module {
             .addInterceptor(
                 ChuckerInterceptor.Builder(get<Context>())
                     .collector(ChuckerCollector(get<Context>()))
-                    .maxContentLength(250000L)
-                    .redactHeaders(emptySet())
                     .alwaysReadResponseBody(false)
                     .build()
             )

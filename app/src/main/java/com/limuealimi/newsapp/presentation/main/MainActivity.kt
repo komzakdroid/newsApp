@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.ui.view
+package com.limuealimi.newsapp.presentation.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

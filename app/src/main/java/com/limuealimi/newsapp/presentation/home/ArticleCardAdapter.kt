@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.ui.adapter
+package com.limuealimi.newsapp.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

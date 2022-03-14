@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.ui.pages
+package com.limuealimi.newsapp.presentation.news
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
