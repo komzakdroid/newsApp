@@ -1,30 +1,25 @@
-package com.limuealimi.newsapp.data.useCaseImpl
+package com.limuealimi.newsapp.presentation.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.limuealimi.newsapp.MainCoroutineRule
-import com.limuealimi.newsapp.domain.repository.MainRepository
-import com.limuealimi.newsapp.wheneverBlocking
+import com.limuealimi.newsapp.data.api.ApiService
+import com.limuealimi.newsapp.domain.model.Article
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 
-
 @ExperimentalCoroutinesApi
-class ArticleCardUseCaseImplTest {
-
+class HomeViewModelTest {
     @get:Rule
     val mockitoRule: MockitoRule = MockitoJUnit.rule()
 
@@ -34,13 +29,16 @@ class ArticleCardUseCaseImplTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @InjectMocks
-    private lateinit var useCase: ArticleCardUseCaseImpl
-
-    private val testDispatcher = TestCoroutineDispatcher()
+    @Mock
+    private lateinit var viewModel: HomeViewModel
 
     @Mock
-    private lateinit var repository: MainRepository
+    private lateinit var api: ApiService
+
+    @Mock
+    private lateinit var articles: List<Article>
+
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @Before
     fun setup() {
@@ -55,11 +53,8 @@ class ArticleCardUseCaseImplTest {
     }
 
     @Test
-    fun `should past be empty`() {
-        runBlocking {
-            wheneverBlocking { repository.getArticles().getOrNull() }.thenReturn(emptyList())
-            val articleEvents = useCase.loadArticlesData().getOrNull()
-            assert(articleEvents?.isEmpty() == true)
-        }
+    fun `get articles positive case`() {
+       // val articleData
     }
+
 }
