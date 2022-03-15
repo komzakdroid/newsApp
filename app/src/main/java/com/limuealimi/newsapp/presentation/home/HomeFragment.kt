@@ -15,7 +15,6 @@ import com.limuealimi.newsapp.presentation.adapter.ArticleCardAdapter
 import com.limuealimi.newsapp.utils.State
 import com.limuealimi.newsapp.utils.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding

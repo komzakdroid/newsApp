@@ -18,9 +18,7 @@ class ArticleCardAdapter : RecyclerView.Adapter<ArticleCardAdapter.GetCardViewHo
         val diffCallback = EventDiffUtilsCallBack(events, newViewItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         events.addAll(newViewItems)
-        diffResult.dispatchUpdatesTo(this)/*
-        events = newViewItems as ArrayList<Article>
-        notifyDataSetChanged()*/
+        diffResult.dispatchUpdatesTo(this)
     }
 
     private var listener: ItemOnClickListener? = null

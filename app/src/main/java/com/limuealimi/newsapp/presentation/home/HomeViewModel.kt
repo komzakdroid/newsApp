@@ -30,15 +30,6 @@ class HomeViewModel(
                     articles.getOrNull()?.isEmpty() == true -> State.Empty
                     else ->
                         State.Content(articles)
-
-                    /* try {
-                         val articles = useCase.loadArticlesData()
-                         val state =
-                             if (articles.isFailure) State.Empty else State.Content(articles)
-                         _articleData.value = state
-                     } catch (e: Exception) {
-                         _articleData.value = State.Error(e.message)
-                     }*/
                 }
         }
     }
