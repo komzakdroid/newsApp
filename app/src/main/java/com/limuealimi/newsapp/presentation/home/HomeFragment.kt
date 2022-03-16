@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.limuealimi.newsapp.R
 import com.limuealimi.newsapp.databinding.FragmentHomeBinding
-import com.limuealimi.newsapp.domain.model.Article
+import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.presentation.adapter.ArticleCardAdapter
 import com.limuealimi.newsapp.utils.State
 import com.limuealimi.newsapp.utils.isVisible

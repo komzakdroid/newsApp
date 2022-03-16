@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.domain.model
+package com.limuealimi.newsapp.data.model
 
 
 data class Article(

@@ -1,6 +1,6 @@
 package com.limuealimi.newsapp.domain.usecase
 
-import com.limuealimi.newsapp.domain.model.Article
+import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.data.repository.MainRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

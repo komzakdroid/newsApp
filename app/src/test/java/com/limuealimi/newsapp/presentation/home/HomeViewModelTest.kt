@@ -8,7 +8,7 @@ import com.appmattus.kotlinfixture.kotlinFixture
 import com.limuealimi.newsapp.MainCoroutineRule
 import com.limuealimi.newsapp.data.api.ApiService
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
-import com.limuealimi.newsapp.domain.model.Article
+import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.data.repository.MainRepository
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
 import com.limuealimi.newsapp.utils.State

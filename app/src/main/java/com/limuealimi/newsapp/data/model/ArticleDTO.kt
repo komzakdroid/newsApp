@@ -1,7 +1,6 @@
 package com.limuealimi.newsapp.data.model
 
 
-import com.limuealimi.newsapp.domain.model.Article
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
