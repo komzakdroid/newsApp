@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.data.useCaseImpl
+package com.limuealimi.newsapp.domain.useCaseImpl
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.appmattus.kotlinfixture.decorator.nullability.NeverNullStrategy
@@ -6,7 +6,8 @@ import com.appmattus.kotlinfixture.decorator.nullability.nullabilityStrategy
 import com.appmattus.kotlinfixture.kotlinFixture
 import com.limuealimi.newsapp.MainCoroutineRule
 import com.limuealimi.newsapp.domain.model.Article
-import com.limuealimi.newsapp.domain.repository.MainRepository
+import com.limuealimi.newsapp.data.repository.MainRepository
+import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
 import com.limuealimi.newsapp.wheneverBlocking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

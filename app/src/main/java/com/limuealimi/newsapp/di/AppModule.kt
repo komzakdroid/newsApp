@@ -6,8 +6,8 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.limuealimi.newsapp.data.api.ApiService
 import com.limuealimi.newsapp.data.repository.MainRepositoryImpl
-import com.limuealimi.newsapp.data.useCaseImpl.ArticleCardUseCaseImpl
-import com.limuealimi.newsapp.domain.repository.MainRepository
+import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
+import com.limuealimi.newsapp.data.repository.MainRepository
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
 import com.limuealimi.newsapp.presentation.home.HomeViewModel
 import kotlinx.coroutines.Dispatchers
