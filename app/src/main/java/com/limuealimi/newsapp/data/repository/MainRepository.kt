@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.domain.repository
+package com.limuealimi.newsapp.data.repository
 
 import com.limuealimi.newsapp.domain.model.Article
 
