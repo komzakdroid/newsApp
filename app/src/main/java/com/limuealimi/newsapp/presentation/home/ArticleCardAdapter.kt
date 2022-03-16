@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.limuealimi.newsapp.databinding.ArticleItemLayoutBinding
-import com.limuealimi.newsapp.domain.model.Article
+import com.limuealimi.newsapp.data.model.Article
 
 class ArticleCardAdapter : RecyclerView.Adapter<ArticleCardAdapter.GetCardViewHolder>() {
 
