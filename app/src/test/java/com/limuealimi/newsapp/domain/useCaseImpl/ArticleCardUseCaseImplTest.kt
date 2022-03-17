@@ -8,6 +8,7 @@ import com.limuealimi.newsapp.MainCoroutineRule
 import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.data.repository.MainRepository
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
+import com.limuealimi.newsapp.utils.DefaultDispatcherProvider
 import com.limuealimi.newsapp.wheneverBlocking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,7 +55,7 @@ class ArticleCardUseCaseImplTest {
         MockitoAnnotations.openMocks(this)
         subject = ArticleCardUseCaseImpl(
             repository = repository,
-            dispatcher = testDispatcher
+            dispatchers = DefaultDispatcherProvider()
         )
     }
 

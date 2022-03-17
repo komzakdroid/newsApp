@@ -3,9 +3,9 @@ package com.limuealimi.newsapp
 import android.app.Application
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
-import com.limuealimi.newsapp.di.module.apiModule
-import com.limuealimi.newsapp.di.module.singletonModule
-import com.limuealimi.newsapp.di.module.viewModels
+import com.limuealimi.newsapp.di.apiModule
+import com.limuealimi.newsapp.di.singletonModule
+import com.limuealimi.newsapp.di.viewModels
 import org.koin.android.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

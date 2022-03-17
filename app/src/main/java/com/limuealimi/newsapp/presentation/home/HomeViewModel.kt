@@ -13,24 +13,18 @@ class HomeViewModel(
     private val useCase: ArticleCardUseCase
 ) : ViewModel() {
 
-    private val _articleData = MutableLiveData<State<Result<List<Article>>>>()
-    val articleData: LiveData<State<Result<List<Article>>>> = _articleData
+    private val _articleDataState = MutableLiveData<State<Result<List<Article>>>>(State.Loading)
+    val articleDataState: LiveData<State<Result<List<Article>>>> = _articleDataState
 
     init {
-        _articleData.value = State.Empty
-    }
-
-    fun getArticlesData() {
         viewModelScope.launch {
-            _articleData.value = State.Loading
             val articles = useCase.loadArticlesData()
-            _articleData.value =
-                when {
-                    articles.isFailure -> State.Error(articles.exceptionOrNull())
-                    articles.getOrNull()?.isEmpty() == true -> State.Empty
-                    else ->
-                        State.Content(articles)
-                }
+            _articleDataState.value = when {
+                articles.isFailure -> State.Error(articles.exceptionOrNull())
+                articles.getOrNull()?.isEmpty() == true -> State.Empty
+                else -> State.Content(articles)
+            }
         }
     }
+
 }
