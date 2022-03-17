@@ -43,14 +43,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun initData() {
-        viewModel.getArticlesData()
         observeArticleData()
     }
 
     @SuppressLint("NewApi")
     private fun observeArticleData() {
         binding.apply {
-            viewModel.articleData.observe(viewLifecycleOwner) { state ->
+            viewModel.articleDataState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     is State.Loading -> {
                         progressBar.isVisible(true)

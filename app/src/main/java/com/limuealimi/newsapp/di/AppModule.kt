@@ -1,16 +1,16 @@
-package com.limuealimi.newsapp.di.module
+package com.limuealimi.newsapp.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.limuealimi.newsapp.data.api.ApiService
-import com.limuealimi.newsapp.data.repository.MainRepositoryImpl
-import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
 import com.limuealimi.newsapp.data.repository.MainRepository
+import com.limuealimi.newsapp.data.repository.MainRepositoryImpl
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
+import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
 import com.limuealimi.newsapp.presentation.home.HomeViewModel
-import kotlinx.coroutines.Dispatchers
+import com.limuealimi.newsapp.utils.DefaultDispatcherProvider
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -59,6 +59,6 @@ val singletonModule = module {
         MainRepositoryImpl(get<ApiService>())
     }
     single<ArticleCardUseCase> {
-        ArticleCardUseCaseImpl(get<MainRepository>(), Dispatchers.IO)
+        ArticleCardUseCaseImpl(get<MainRepository>(), DefaultDispatcherProvider())
     }
 }
