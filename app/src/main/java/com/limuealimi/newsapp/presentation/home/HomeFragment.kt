@@ -9,40 +9,49 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.limuealimi.newsapp.R
-import com.limuealimi.newsapp.databinding.FragmentHomeBinding
 import com.limuealimi.newsapp.data.model.Article
-import com.limuealimi.newsapp.presentation.adapter.ArticleCardAdapter
+import com.limuealimi.newsapp.databinding.FragmentHomeBinding
+import com.limuealimi.newsapp.di.apiModule
+import com.limuealimi.newsapp.di.singletonModule
+import com.limuealimi.newsapp.di.viewModels
 import com.limuealimi.newsapp.utils.State
 import com.limuealimi.newsapp.utils.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 
 class HomeFragment : Fragment() {
+
     private lateinit var binding: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by viewModel()
 
-    private lateinit var cardAdapter: ArticleCardAdapter
+    private lateinit var cardAdapter: PaginationAdapter
     private val dataList = ArrayList<Article>()
+    private var _currentPage = 1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initRv()
 
-        initData()
+        initDataByPage()
 
         onClickItems()
     }
 
-    private fun initData() {
+    private fun initDataByPage() {
+        viewModel.getArticlesByPage(_currentPage)
         observeArticleData()
     }
 
@@ -84,7 +93,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun onClickItems() {
-        cardAdapter.onClickListener(object : ArticleCardAdapter.ItemOnClickListener {
+        cardAdapter.onClickListener(object : PaginationAdapter.ItemOnClickListener {
             override fun onItemClickOption(position: Int, data: Article, itemView: View) {
                 findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
             }
@@ -93,12 +102,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRv() {
-        cardAdapter = ArticleCardAdapter()
+        cardAdapter = PaginationAdapter()
         binding.rv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             adapter = cardAdapter
         }
     }
-
 }

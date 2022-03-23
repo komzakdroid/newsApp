@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.presentation.adapter
+package com.limuealimi.newsapp.presentation.home
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import com.bumptech.glide.Glide
 import com.limuealimi.newsapp.databinding.ArticleItemLayoutBinding
 import com.limuealimi.newsapp.data.model.Article
 
-class ArticleCardAdapter : RecyclerView.Adapter<ArticleCardAdapter.GetCardViewHolder>() {
-
+class _ArticleCardAdapter/* : RecyclerView.Adapter<ArticleCardAdapter.GetCardViewHolder>()*/ {
+/*
     private var events = ArrayList<Article>()
 
     fun updateEvents(newViewItems: List<Article>) {
@@ -63,9 +63,10 @@ class ArticleCardAdapter : RecyclerView.Adapter<ArticleCardAdapter.GetCardViewHo
 
     interface ItemOnClickListener {
         fun onItemClickOption(position: Int, data: Article, itemView: View)
-    }
+    }*/
 }
 
+/*
 class EventDiffUtilsCallBack(
     private val oldViewItems: List<Article>,
     private val newViewItems: List<Article>
@@ -78,4 +79,4 @@ class EventDiffUtilsCallBack(
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
         oldViewItems[oldItemPosition] == newViewItems[newItemPosition]
-}
+}*/

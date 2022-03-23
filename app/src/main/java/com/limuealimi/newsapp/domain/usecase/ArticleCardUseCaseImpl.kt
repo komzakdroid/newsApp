@@ -10,9 +10,9 @@ class ArticleCardUseCaseImpl(
     private val repository: MainRepository,
     private val dispatchers: DispatcherProvider = DefaultDispatcherProvider()
 ) : ArticleCardUseCase {
-    override suspend fun loadArticlesData(): Result<List<Article>> {
+    override suspend fun loadArticlesData(pageNumber: Int): Result<List<Article>> {
         return withContext(dispatchers.default()) {
-            repository.getArticles()
+            repository.getArticles(pageNumber)
         }
     }
 }

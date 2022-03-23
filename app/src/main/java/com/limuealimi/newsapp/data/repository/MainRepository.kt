@@ -4,5 +4,5 @@ import com.limuealimi.newsapp.data.model.Article
 
 
 interface MainRepository {
-    suspend fun getArticles(): Result<List<Article>>
+    suspend fun getArticles(pageNumber: Int): Result<List<Article>>
 }
