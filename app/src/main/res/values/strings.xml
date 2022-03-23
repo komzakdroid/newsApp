@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">newsApp</string>
+    <string name="app_name">World News</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="we_do_not_have_no_any_articles">We don\'t have ant articles</string>
+    <string name="search_article_name">search news</string>
 </resources>

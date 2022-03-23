@@ -5,11 +5,11 @@ import com.limuealimi.newsapp.data.model.Article
 import java.lang.Exception
 
 class MainRepositoryImpl(
-    private val apiService: ApiService,
+    private val apiService: ApiService
 ) : MainRepository {
-    override suspend fun getArticles(): Result<List<Article>> {
+    override suspend fun getArticles(pageNumber: Int): Result<List<Article>> {
         return try {
-            Result.success(apiService.getArticles().articles.map { it.mapToArticleDTO() })
+            Result.success(apiService.getArticles(pageNumber = pageNumber).articles.map { it.mapToArticleDTO() })
         } catch (e: Exception) {
             Result.failure(e)
         }

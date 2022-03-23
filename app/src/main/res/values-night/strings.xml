@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="we_do_not_have_no_any_articles">We don\'t have ant articles</string>
+    <string name="search_article_name">search news</string>
 </resources>

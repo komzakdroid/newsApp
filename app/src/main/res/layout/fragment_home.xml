@@ -40,4 +40,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/article_item_layout" />
+
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:background="@color/white"
+        android:hint="@string/search_article_name"
+        android:inputType="textPersonName"
+        android:paddingStart="@dimen/_8ssp"
+        android:paddingEnd="@dimen/_8ssp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="@dimen/_8ssp" />
 </RelativeLayout>

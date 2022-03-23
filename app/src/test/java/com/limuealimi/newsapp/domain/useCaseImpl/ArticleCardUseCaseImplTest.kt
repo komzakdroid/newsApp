@@ -69,8 +69,8 @@ class ArticleCardUseCaseImplTest {
     fun `request success returns list of the articles`() {
         runBlocking {
             val articles: List<Article> = fixture()
-            wheneverBlocking { repository.getArticles() }.thenReturn(Result.success(articles))
-            val result = subject.loadArticlesData()
+            wheneverBlocking { repository.getArticles(1) }.thenReturn(Result.success(articles))
+            val result = subject.loadArticlesData(1)
             assert(result.isSuccess)
             articles.forEachIndexed { index, article ->
                 assert(result.getOrNull()!![index] == article)

@@ -44,7 +44,7 @@ val apiModule = module {
     single<Retrofit> {
         Retrofit.Builder()
             .client(get<OkHttpClient>())
-            .baseUrl("https://newsapi.org/v2/")
+            .baseUrl("https://newsapi.org")
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
