@@ -59,6 +59,7 @@ class HomeViewModelTest {
         mainCoroutineRule.testDispatcher.runBlockingTest {
             viewModel = HomeViewModel(loadArticleCardUseCase)
             // wheneverBlocking { loadArticleCardUseCase.loadArticlesData() }.thenReturn(fixture())
-            loadArticleCardUseCase.loadArticlesData().onSuccess { emptyList<Article>() }
+            loadArticleCardUseCase.loadArticlesData(1).onSuccess { emptyList<Article>() }
+
         }
 }

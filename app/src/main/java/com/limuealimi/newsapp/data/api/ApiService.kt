@@ -8,14 +8,14 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("v2/top-headlines")
     suspend fun getArticles(
-        @Query("country")
-        country: String = "us",
-        @Query("category")
-        category: String = "business",
-        @Query("page")
-        pageNumber: Int,
+        @Query("q")
+        search: String = "q",
         @Query("apiKey")
-        apiKey: String = BuildConfig.API_KEY
+        apiKey: String = BuildConfig.API_KEY,
+        @Query("page")
+        page: Int,
+        @Query("pageSize")
+        pageSize: Int,
     ): ArticleResponse
 
     @GET("v2/everything")

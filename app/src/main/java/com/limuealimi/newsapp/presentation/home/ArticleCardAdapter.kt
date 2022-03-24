@@ -1,82 +1,60 @@
 package com.limuealimi.newsapp.presentation.home
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.limuealimi.newsapp.databinding.ArticleItemLayoutBinding
 import com.limuealimi.newsapp.data.model.Article
+import com.limuealimi.newsapp.databinding.ArticleItemLayoutBinding
+import org.w3c.dom.CharacterData
 
-class _ArticleCardAdapter/* : RecyclerView.Adapter<ArticleCardAdapter.GetCardViewHolder>()*/ {
-/*
+class ArticleCardAdapter :
+    PagingDataAdapter<Article, ArticleCardAdapter.ArticleVh>(DiffUtilCallBack()) {
+
     private var events = ArrayList<Article>()
 
-    fun updateEvents(newViewItems: List<Article>) {
-        val diffCallback = EventDiffUtilsCallBack(events, newViewItems)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        events.addAll(newViewItems)
-        diffResult.dispatchUpdatesTo(this)
-    }
+    inner class ArticleVh(private var itemLayoutBinding: ArticleItemLayoutBinding) :
+        RecyclerView.ViewHolder(itemLayoutBinding.root) {
 
-    private var listener: ItemOnClickListener? = null
-
-    fun onClickListener(listener: ItemOnClickListener) {
-        this.listener = listener
-    }
-
-    inner class GetCardViewHolder
-    constructor(
-        private val binding: ArticleItemLayoutBinding,
-        private val listener: ItemOnClickListener?
-    ) : RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("SetTextI18n")
-        fun bind(data: Article) {
-            with(binding) {
-                val context = binding.root.context
+        fun onBind(article: Article) {
+            itemLayoutBinding.apply {
+                val context = root.context
                 Glide.with(context)
-                    .load(data.urlToImage)
+                    .load(article.urlToImage)
                     .centerCrop()
                     .into(imageView)
-                title.text = data.title
-                author.text = data.author
-                postedDate.text = data.publishedAt
-                description.text = data.description
+                title.text = article.title
+                author.text = article.author
+                postedDate.text = article.publishedAt
+                description.text = article.description
             }
         }
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        GetCardViewHolder(
-            ArticleItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            listener
-        )
-
-    override fun onBindViewHolder(holder: GetCardViewHolder, position: Int) {
-        holder.bind(events[position])
+    override fun onBindViewHolder(holder: ArticleVh, position: Int) {
+        holder.onBind(events[position])
     }
 
-    override fun getItemCount() = events.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleVh {
+        return ArticleVh(
+            ArticleItemLayoutBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+    }
 
-    interface ItemOnClickListener {
-        fun onItemClickOption(position: Int, data: Article, itemView: View)
-    }*/
+    class DiffUtilCallBack : DiffUtil.ItemCallback<Article>() {
+        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+            return oldItem.title == newItem.title
+        }
+
+        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
+            return oldItem.title == newItem.title
+                    && oldItem.content == newItem.content
+        }
+    }
 }
-
-/*
-class EventDiffUtilsCallBack(
-    private val oldViewItems: List<Article>,
-    private val newViewItems: List<Article>
-) : DiffUtil.Callback() {
-    override fun getOldListSize() = oldViewItems.size
-    override fun getNewListSize() = newViewItems.size
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-        oldViewItems[oldItemPosition] == newViewItems[newItemPosition]
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-        oldViewItems[oldItemPosition] == newViewItems[newItemPosition]
-}*/
