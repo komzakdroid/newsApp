@@ -2,9 +2,8 @@ package com.limuealimi.newsapp.presentation.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +13,7 @@ import com.limuealimi.newsapp.databinding.FragmentHomeBinding
 import com.limuealimi.newsapp.di.apiModule
 import com.limuealimi.newsapp.di.singletonModule
 import com.limuealimi.newsapp.di.viewModels
+import com.limuealimi.newsapp.presentation.main.MainActivity
 import com.limuealimi.newsapp.utils.State
 import com.limuealimi.newsapp.utils.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,13 +23,15 @@ import org.koin.core.context.unloadKoinModules
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-
     private val viewModel: HomeViewModel by viewModel()
-
     private lateinit var cardAdapter: PaginationAdapter
     private val dataList = ArrayList<Article>()
     private var _currentPage = 1
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +46,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRv()
-
         initDataByPage()
-
         onClickItems()
     }
 
@@ -108,5 +108,28 @@ class HomeFragment : Fragment() {
             setHasFixedSize(true)
             adapter = cardAdapter
         }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+        inflater.inflate(R.menu.menu_main, menu)
+        val searchView =
+            SearchView((context as MainActivity).supportActionBar?.themedContext ?: context)
+        menu.findItem(R.id.action_search).apply {
+            setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
+            actionView = searchView
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return true
+            }
+        })
     }
 }
