@@ -5,8 +5,8 @@ import com.appmattus.kotlinfixture.decorator.nullability.NeverNullStrategy
 import com.appmattus.kotlinfixture.decorator.nullability.nullabilityStrategy
 import com.appmattus.kotlinfixture.kotlinFixture
 import com.limuealimi.newsapp.MainCoroutineRule
-import com.limuealimi.newsapp.data.api.ApiService
-import com.limuealimi.newsapp.data.model.ArticleResponse
+import com.limuealimi.newsapp.data.network.api.ApiService
+import com.limuealimi.newsapp.data.network.model.ArticleResponse
 import com.limuealimi.newsapp.wheneverBlocking
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi

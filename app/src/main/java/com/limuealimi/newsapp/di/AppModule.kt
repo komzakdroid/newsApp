@@ -1,10 +1,12 @@
 package com.limuealimi.newsapp.di
 
 import android.content.Context
+import androidx.viewbinding.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.limuealimi.newsapp.data.api.ApiService
+import com.limuealimi.newsapp.data.network.AuthInterceptor
+import com.limuealimi.newsapp.data.network.api.ApiService
 import com.limuealimi.newsapp.data.repository.MainRepository
 import com.limuealimi.newsapp.data.repository.MainRepositoryImpl
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
@@ -32,6 +34,7 @@ val apiModule = module {
     }
     single<OkHttpClient> {
         OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(apiKey = BuildConfig.API_KEY))
             .addInterceptor(
                 ChuckerInterceptor.Builder(get<Context>())
                     .collector(ChuckerCollector(get<Context>()))
