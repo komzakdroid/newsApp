@@ -1,60 +1,59 @@
 package com.limuealimi.newsapp.presentation.home
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import by.kirich1409.viewbindingdelegate.viewBinding
+import coil.load
+import com.limuealimi.newsapp.R
 import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.databinding.ArticleItemLayoutBinding
-import org.w3c.dom.CharacterData
 
-class ArticleCardAdapter :
-    PagingDataAdapter<Article, ArticleCardAdapter.ArticleVh>(DiffUtilCallBack()) {
+class ArticleCardAdapter(context: Context) :
+    PagingDataAdapter<Article, ArticleCardAdapter.ArticleViewHolder>(ArticleDiffItemCallback) {
 
-    private var events = ArrayList<Article>()
+    private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
-    inner class ArticleVh(private var itemLayoutBinding: ArticleItemLayoutBinding) :
-        RecyclerView.ViewHolder(itemLayoutBinding.root) {
 
-        fun onBind(article: Article) {
-            itemLayoutBinding.apply {
-                val context = root.context
-                Glide.with(context)
-                    .load(article.urlToImage)
-                    .centerCrop()
-                    .into(imageView)
-                title.text = article.title
-                author.text = article.author
-                postedDate.text = article.publishedAt
-                description.text = article.description
-            }
-        }
-    }
-
-    override fun onBindViewHolder(holder: ArticleVh, position: Int) {
-        holder.onBind(events[position])
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleVh {
-        return ArticleVh(
-            ArticleItemLayoutBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
+        return ArticleViewHolder(
+            layoutInflater.inflate(R.layout.article_item_layout, parent, false)
         )
     }
 
-    class DiffUtilCallBack : DiffUtil.ItemCallback<Article>() {
+    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
+        holder.onBind(getItem(position))
+    }
+
+
+    class ArticleViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+
+        private val viewBinding by viewBinding(ArticleItemLayoutBinding::bind)
+
+        fun onBind(article: Article?) {
+            with(viewBinding) {
+                imageView.load(article?.urlToImage)
+                title.text = article?.title
+                author.text = article?.author
+                postedDate.text = article?.publishedAt
+                description.text = article?.description
+            }
+
+        }
+    }
+
+    private object ArticleDiffItemCallback : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem.title == newItem.title
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem.title == newItem.title
-                    && oldItem.content == newItem.content
+            return oldItem.title == newItem.title && oldItem.url == newItem.url
         }
     }
 }

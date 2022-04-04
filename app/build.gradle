@@ -14,9 +14,12 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "API_KEY", "\"211ef9928f694387aeed2a7f275253fe\""
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+        buildConfigField "String", "API_KEY", "\"${properties.getProperty('API_KEY')}\""
     }
 
     buildTypes {
@@ -75,8 +78,10 @@ dependencies {
     implementation "com.squareup.moshi:moshi:1.13.0"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.13.0"
 
-    //ViewModelScope
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    def lifecycleVersion = '2.4.0-alpha01'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
 
     //coroutines adapter
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
@@ -86,6 +91,10 @@ dependencies {
 
     //paging 3
     implementation "androidx.paging:paging-runtime:3.1.1"
+
+
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.6'
+    implementation "io.coil-kt:coil:1.2.1"
 
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"

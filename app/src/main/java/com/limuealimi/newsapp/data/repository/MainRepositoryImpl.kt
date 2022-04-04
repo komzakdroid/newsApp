@@ -1,17 +1,13 @@
 package com.limuealimi.newsapp.data.repository
 
-import com.limuealimi.newsapp.data.network.api.ApiService
+import androidx.paging.PagingSource
 import com.limuealimi.newsapp.data.model.Article
-import java.lang.Exception
+import com.limuealimi.newsapp.data.network.ArticlesPagingSource
 
 class MainRepositoryImpl(
-    private val apiService: ApiService
+    private val articlesPagingSource: ArticlesPagingSource.Factory
 ) : MainRepository {
-    override suspend fun getArticles(pageNumber: Int): Result<List<Article>> {
-        return try {
-            Result.success(apiService.getArticles(pageNumber = pageNumber).articles.map { it.mapToArticleDTO() })
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override fun getArticles(query: String): PagingSource<Int, Article> {
+        return articlesPagingSource.create(query)
     }
 }

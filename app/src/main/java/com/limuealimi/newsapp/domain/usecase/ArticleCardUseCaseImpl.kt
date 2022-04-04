@@ -1,5 +1,6 @@
 package com.limuealimi.newsapp.domain.usecase
 
+import androidx.paging.PagingSource
 import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.data.repository.MainRepository
 import com.limuealimi.newsapp.utils.DefaultDispatcherProvider
@@ -8,11 +9,8 @@ import kotlinx.coroutines.withContext
 
 class ArticleCardUseCaseImpl(
     private val repository: MainRepository,
-    private val dispatchers: DispatcherProvider = DefaultDispatcherProvider()
 ) : ArticleCardUseCase {
-    override suspend fun loadArticlesData(pageNumber: Int): Result<List<Article>> {
-        return withContext(dispatchers.default()) {
-            repository.getArticles(pageNumber)
-        }
+    override fun loadArticlesData(query: String): PagingSource<Int, Article> {
+        return repository.getArticles(query)
     }
 }

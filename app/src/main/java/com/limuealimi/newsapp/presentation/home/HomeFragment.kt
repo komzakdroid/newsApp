@@ -1,32 +1,28 @@
 package com.limuealimi.newsapp.presentation.home
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.addRepeatingJob
+import androidx.paging.LoadState
 import com.limuealimi.newsapp.R
-import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.databinding.FragmentHomeBinding
-import com.limuealimi.newsapp.di.apiModule
-import com.limuealimi.newsapp.di.singletonModule
-import com.limuealimi.newsapp.di.viewModels
 import com.limuealimi.newsapp.presentation.main.MainActivity
-import com.limuealimi.newsapp.utils.State
-import com.limuealimi.newsapp.utils.isVisible
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
 
+@ExperimentalCoroutinesApi
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModel()
-    private lateinit var cardAdapter: PaginationAdapter
-    private val dataList = ArrayList<Article>()
-    private var _currentPage = 1
+    private val adapter by lazy(LazyThreadSafetyMode.NONE) {
+        ArticleCardAdapter(requireContext())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,71 +41,38 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRv()
-        initDataByPage()
-        onClickItems()
-    }
-
-    private fun initDataByPage() {
-        viewModel.getArticlesByPage(_currentPage)
-        observeArticleData()
-    }
-
-    @SuppressLint("NewApi")
-    private fun observeArticleData() {
         binding.apply {
-            viewModel.articleDataState.observe(viewLifecycleOwner) { state ->
-                when (state) {
-                    is State.Loading -> {
-                        progressBar.isVisible(true)
-                        llEmpty.isVisible(false)
-                        println("Loading->")
-                    }
-                    is State.Error -> {
-                        progressBar.isVisible(false)
-                        llEmpty.isVisible(false)
-                        println("Error state -> ${state.error}")
-                    }
-                    is State.NoConnection -> {
-                        progressBar.isVisible(false)
-                    }
-                    is State.Content -> {
-                        progressBar.isVisible(false)
-                        llEmpty.isVisible(false)
-                        dataList.clear()
-                        state.content.getOrNull()?.let { dataList.addAll(it) }
-                        cardAdapter.updateEvents(dataList)
-                        rv.isVisible(true)
-                    }
-                    is State.Empty -> {
-                        progressBar.isVisible(false)
-                        llEmpty.isVisible(true)
-                        rv.isVisible(false)
-                        print("Empty state")
-                    }
-                }
+            rv.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = ArticleLoadStateAdapter(),
+                footer = ArticleLoadStateAdapter()
+            )
+        }
+
+        adapter.addLoadStateListener { state ->
+            binding.apply {
+                rv.isVisible = state.refresh != LoadState.Loading
+                progressBar.isVisible = state.refresh == LoadState.Loading
             }
         }
-    }
 
-    private fun onClickItems() {
-        cardAdapter.onClickListener(object : PaginationAdapter.ItemOnClickListener {
-            override fun onItemClickOption(position: Int, data: Article, itemView: View) {
-                findNavController().navigate(R.id.action_homeFragment_to_newsFragment)
-            }
-
-        })
-    }
-
-    private fun initRv() {
-        cardAdapter = PaginationAdapter()
-        binding.rv.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            setHasFixedSize(true)
-            adapter = cardAdapter
+        addRepeatingJob(Lifecycle.State.STARTED) {
+            viewModel.articles
+                .collectLatest(adapter::submitData)
         }
-    }
 
+//        viewModel.query
+//            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+//            .onEach(::updateSearchQuery)
+//            .launchIn(lifecycleScope)
+    }
+//
+//    private fun updateSearchQuery(searchQuery: String) {
+//        with(viewBinding.query) {
+//            if ((text?.toString() ?: "") != searchQuery) {
+//                setText(searchQuery)
+//            }
+//        }
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -124,10 +87,12 @@ class HomeFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+                viewModel.setQuery(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.setQuery(newText)
                 return true
             }
         })

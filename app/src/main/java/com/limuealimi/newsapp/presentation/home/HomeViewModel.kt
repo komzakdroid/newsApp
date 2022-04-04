@@ -1,41 +1,38 @@
 package com.limuealimi.newsapp.presentation.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
-import com.limuealimi.newsapp.utils.State
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 
 class HomeViewModel(
     private val useCase: ArticleCardUseCase,
 ) : ViewModel() {
-    private val pageNumber: LiveData<Int> = MutableLiveData()
-    private val _articleDataState = MutableLiveData<State<Result<List<Article>>>>(State.Loading)
-    val articleDataState: LiveData<State<Result<List<Article>>>> = _articleDataState
-    private var searchedDataList = listOf<Article>()
+    private val _query = MutableStateFlow("")
+    val query: StateFlow<String> = _query.asStateFlow()
 
-    init {
-        pageNumber.value?.let { getArticlesByPage(pageNumber = it) }
+    private var newPagingSource: PagingSource<*, *>? = null
+
+    @ExperimentalCoroutinesApi
+    val articles: StateFlow<PagingData<Article>> = query
+        .map(::newPager)
+        .flatMapLatest { pager -> pager.flow }
+        .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+
+
+    private fun newPager(query: String): Pager<Int, Article> {
+        return Pager(PagingConfig(5, enablePlaceholders = false)) {
+            useCase.loadArticlesData(query).also { newPagingSource = it }
+        }
     }
 
-    fun getArticlesByPage(pageNumber: Int) {
-        viewModelScope.launch {
-            val articles = useCase.loadArticlesData(pageNumber)
-            when {
-                articles.isFailure -> {
-                    _articleDataState.value = State.Error(articles.exceptionOrNull())
-                }
-                articles.getOrNull()?.isEmpty() == true -> {
-                    _articleDataState.value = State.Empty
-                }
-                else -> {
-                    _articleDataState.value = State.Content(articles)
-                    searchedDataList = articles.getOrThrow()
-                }
-            }
-        }
+    fun setQuery(query: String) {
+        _query.tryEmit(query)
     }
 }

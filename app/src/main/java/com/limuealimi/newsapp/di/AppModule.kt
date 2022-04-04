@@ -1,10 +1,11 @@
 package com.limuealimi.newsapp.di
 
 import android.content.Context
-import androidx.viewbinding.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.limuealimi.newsapp.BuildConfig
+import com.limuealimi.newsapp.data.network.ArticlesPagingSource
 import com.limuealimi.newsapp.data.network.AuthInterceptor
 import com.limuealimi.newsapp.data.network.api.ApiService
 import com.limuealimi.newsapp.data.repository.MainRepository
@@ -12,10 +13,10 @@ import com.limuealimi.newsapp.data.repository.MainRepositoryImpl
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
 import com.limuealimi.newsapp.presentation.home.HomeViewModel
-import com.limuealimi.newsapp.utils.DefaultDispatcherProvider
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -34,7 +35,7 @@ val apiModule = module {
     }
     single<OkHttpClient> {
         OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(apiKey = BuildConfig.API_KEY))
+            .addInterceptor(AuthInterceptor(BuildConfig.API_KEY))
             .addInterceptor(
                 ChuckerInterceptor.Builder(get<Context>())
                     .collector(ChuckerCollector(get<Context>()))
@@ -58,10 +59,12 @@ val apiModule = module {
 }
 
 val singletonModule = module {
+    single<ArticlesPagingSource> { get() }
     single<MainRepository> {
-        MainRepositoryImpl(get<ApiService>())
+        MainRepositoryImpl(get<ArticlesPagingSource.Factory>())
     }
     single<ArticleCardUseCase> {
-        ArticleCardUseCaseImpl(get<MainRepository>(), DefaultDispatcherProvider())
+        ArticleCardUseCaseImpl(get<MainRepository>())
     }
 }
+
