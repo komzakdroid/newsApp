@@ -1,4 +1,4 @@
-package com.limuealimi.newsapp.data
+package com.limuealimi.newsapp.utils
 
 import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.data.model.Source

@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.data.network.api.ApiService
-import com.limuealimi.newsapp.data.toArticle
+import com.limuealimi.newsapp.utils.toArticle
 import retrofit2.HttpException
 
 class ArticlesPagingSource constructor(
