@@ -9,8 +9,12 @@ import kotlinx.coroutines.withContext
 
 class ArticleCardUseCaseImpl(
     private val repository: MainRepository,
+    private val dispatchers: DispatcherProvider = DefaultDispatcherProvider()
 ) : ArticleCardUseCase {
-    override fun loadArticlesData(query: String): PagingSource<Int, Article> {
-        return repository.getArticles(query)
+    override suspend fun loadArticlesData(query: String): PagingSource<Int, Article> {
+        return withContext(dispatchers.default()) {
+            repository.getArticles(query)
+        }
     }
+
 }

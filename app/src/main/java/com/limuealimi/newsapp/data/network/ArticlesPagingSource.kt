@@ -42,10 +42,6 @@ class ArticlesPagingSource constructor(
         return anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
     }
 
-    interface Factory {
-        fun create(query: String): ArticlesPagingSource
-    }
-
     companion object {
         const val INITIAL_PAGE_NUMBER = 1
     }

@@ -10,7 +10,7 @@ import java.util.*
 interface ApiService {
     @GET("/v2/everything")
     suspend fun everything(
-        @Query("q") query: String? = null,
+        @Query("q") query: String = "q",
         @Query("page") @IntRange(from = 1) page: Int = 1,
         @Query("pageSize") @IntRange(
             from = 1,
@@ -24,6 +24,7 @@ interface ApiService {
         @Query("to") to: Date? = null,
         @Query("language") language: Language? = null,
         @Query("sortBy") sortBy: SortBy? = null,
+        @Query("apiKey") API_KEY: String = "211ef9928f694387aeed2a7f275253fe"
     ): Response<ArticleResponseDTO>
 
     enum class Language {

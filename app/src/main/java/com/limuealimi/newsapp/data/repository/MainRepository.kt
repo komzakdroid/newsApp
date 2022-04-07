@@ -5,5 +5,5 @@ import com.limuealimi.newsapp.data.model.Article
 
 
 interface MainRepository {
-    fun getArticles(query: String): PagingSource<Int, Article>
+    suspend fun getArticles(query: String): PagingSource<Int, Article>
 }

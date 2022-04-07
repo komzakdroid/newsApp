@@ -10,14 +10,15 @@ import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val useCase: ArticleCardUseCase,
 ) : ViewModel() {
-    private val _query = MutableStateFlow("")
+    private val _query = MutableStateFlow("q")
     val query: StateFlow<String> = _query.asStateFlow()
-
-    private var newPagingSource: PagingSource<*, *>? = null
+    private var newPagingSource: PagingSource<Int, Article>? = null
+    private var pager: Pager<Int, Article>? = null
 
     @ExperimentalCoroutinesApi
     val articles: StateFlow<PagingData<Article>> = query
@@ -27,9 +28,13 @@ class HomeViewModel(
 
 
     private fun newPager(query: String): Pager<Int, Article> {
-        return Pager(PagingConfig(5, enablePlaceholders = false)) {
-            useCase.loadArticlesData(query).also { newPagingSource = it }
+        viewModelScope.launch {
+            val articles = useCase.loadArticlesData("q")
+            pager = Pager(PagingConfig(5, enablePlaceholders = false)) {
+                articles.also { newPagingSource = it }
+            }
         }
+        return pager!!
     }
 
     fun setQuery(query: String) {

@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import com.limuealimi.newsapp.data.model.Article
 
 interface ArticleCardUseCase {
-    fun loadArticlesData(
+    suspend fun loadArticlesData(
         query: String
     ): PagingSource<Int, Article>
 }
