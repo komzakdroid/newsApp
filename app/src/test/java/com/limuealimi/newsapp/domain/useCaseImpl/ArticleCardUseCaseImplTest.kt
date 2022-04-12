@@ -6,7 +6,6 @@ import com.appmattus.kotlinfixture.decorator.nullability.nullabilityStrategy
 import com.appmattus.kotlinfixture.kotlinFixture
 import com.limuealimi.newsapp.MainCoroutineRule
 import com.limuealimi.newsapp.data.repository.MainRepository
-import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Rule
@@ -27,7 +26,6 @@ class ArticleCardUseCaseImplTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var subject: ArticleCardUseCaseImpl
 
     private val testDispatcher = TestCoroutineDispatcher()
 

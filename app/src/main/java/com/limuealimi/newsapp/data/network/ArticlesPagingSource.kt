@@ -21,13 +21,13 @@ class ArticlesPagingSource constructor(
             val pageSize = params.loadSize.coerceAtMost(ApiService.MAX_PAGE_SIZE)
             val response = apiService.everything(query, pageNumber, pageSize)
 
-            if (response.isSuccessful) {
+            return if (response.isSuccessful) {
                 val articles = response.body()!!.articles.map { it.toArticle() }
                 val nextPageNumber = if (articles.isEmpty()) null else pageNumber + 1
                 val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
-                return LoadResult.Page(articles, prevPageNumber, nextPageNumber)
+                LoadResult.Page(articles, prevPageNumber, nextPageNumber)
             } else {
-                return LoadResult.Error(HttpException(response))
+                LoadResult.Error(HttpException(response))
             }
         } catch (e: HttpException) {
             return LoadResult.Error(e)

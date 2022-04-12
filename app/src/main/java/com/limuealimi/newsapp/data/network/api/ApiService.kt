@@ -10,7 +10,7 @@ import java.util.*
 interface ApiService {
     @GET("/v2/everything")
     suspend fun everything(
-        @Query("q") query: String = "q",
+        @Query("q") query: String? = null,
         @Query("page") @IntRange(from = 1) page: Int = 1,
         @Query("pageSize") @IntRange(
             from = 1,

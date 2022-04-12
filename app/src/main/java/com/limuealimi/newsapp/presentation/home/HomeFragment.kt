@@ -5,14 +5,13 @@ import android.view.*
 import android.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.addRepeatingJob
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.limuealimi.newsapp.R
 import com.limuealimi.newsapp.databinding.FragmentHomeBinding
 import com.limuealimi.newsapp.presentation.main.MainActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
@@ -40,39 +39,28 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.apply {
             rv.adapter = adapter.withLoadStateHeaderAndFooter(
                 header = ArticleLoadStateAdapter(),
                 footer = ArticleLoadStateAdapter()
             )
         }
-
         adapter.addLoadStateListener { state ->
             binding.apply {
                 rv.isVisible = state.refresh != LoadState.Loading
                 progressBar.isVisible = state.refresh == LoadState.Loading
             }
         }
-
-        addRepeatingJob(Lifecycle.State.STARTED) {
-            viewModel.articles
-                .collectLatest(adapter::submitData)
-        }
-
-//        viewModel.query
-//            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
-//            .onEach(::updateSearchQuery)
-//            .launchIn(lifecycleScope)
+        initObservers()
     }
-//
-//    private fun updateSearchQuery(searchQuery: String) {
-//        with(viewBinding.query) {
-//            if ((text?.toString() ?: "") != searchQuery) {
-//                setText(searchQuery)
-//            }
-//        }
-//    }
+
+    private fun initObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getArticles().observe(viewLifecycleOwner) {
+                adapter.submitData(lifecycle, it)
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -87,12 +75,14 @@ class HomeFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                viewModel.setQuery(query)
+                viewModel.updateQuery(query)
+                initObservers()
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.setQuery(newText)
+                viewModel.updateQuery(newText)
+                initObservers()
                 return true
             }
         })
