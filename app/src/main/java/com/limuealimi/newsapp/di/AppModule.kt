@@ -17,6 +17,7 @@ import com.limuealimi.newsapp.utils.DefaultDispatcherProvider
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -60,8 +61,9 @@ val apiModule = module {
 
 val singletonModule = module {
     single<ArticlesPagingSource> { get() }
+
     single<MainRepository> {
-        MainRepositoryImpl(get())
+        MainRepositoryImpl(get<ApiService>())
     }
     single<ArticleCardUseCase> {
         ArticleCardUseCaseImpl(get<MainRepository>(), DefaultDispatcherProvider())

@@ -55,8 +55,20 @@ dependencies {
     implementation "com.intuit.ssp:ssp-android:1.0.6"
 
     //Koin
-    implementation "io.insert-koin:koin-core:3.2.0-beta-1"
-    implementation "io.insert-koin:koin-android:3.2.0-beta-1"
+    def koin_version = "3.2.0-beta-1"
+    // Koin Core features
+    implementation "io.insert-koin:koin-core:$koin_version"
+    // Koin main features for Android
+    implementation "io.insert-koin:koin-android:$koin_version"
+    // No more koin-android-viewmodel, koin-android-scope, koin-android-fragment
+    // Java Compatibility
+    implementation "io.insert-koin:koin-android-compat:$koin_version"
+    // Jetpack WorkManager
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    // Navigation Graph
+    implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
+    // Jetpack Compose
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
     //okhttp
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
@@ -112,6 +124,11 @@ dependencies {
 
     testImplementation 'com.github.javafaker:javafaker:0.18'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
+
+    // Koin Test features
+    testImplementation "io.insert-koin:koin-test:$koin_version"
+    // alternatively - without Android dependencies for tests
+    testImplementation("androidx.paging:paging-common:3.1.1")
 
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

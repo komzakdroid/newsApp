@@ -1,5 +1,6 @@
 package com.limuealimi.newsapp.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -13,12 +14,14 @@ class MainRepositoryImpl(
     private val apiService: ApiService
 ) : MainRepository {
     override suspend fun getArticles(query: String): LiveData<PagingData<Article>> {
+        Log.d("repo_query", "getArticles:$query ")
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
+                Log.d("CHECKING_Factory", "getArticles: *********")
                 ArticlesPagingSource(apiService, query)
             }
         ).liveData

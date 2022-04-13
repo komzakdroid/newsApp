@@ -1,6 +1,7 @@
 package com.limuealimi.newsapp.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.core.view.isVisible
@@ -56,8 +57,10 @@ class HomeFragment : Fragment() {
 
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getArticles().observe(viewLifecycleOwner) {
-                adapter.submitData(lifecycle, it)
+            viewModel.articleList.observe(viewLifecycleOwner) {
+                if(it != null){Log.d("TAG", "initObservers:$it ")
+                    adapter.submitData(lifecycle, it)}
+
             }
         }
     }
@@ -75,15 +78,14 @@ class HomeFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                viewModel.updateQuery(query)
-                initObservers()
-                return true
+                return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.updateQuery(newText)
-                initObservers()
-                return true
+                if (newText.isNotEmpty()) {
+                    viewModel.updateQuery(newText)
+                }
+                return false
             }
         })
     }

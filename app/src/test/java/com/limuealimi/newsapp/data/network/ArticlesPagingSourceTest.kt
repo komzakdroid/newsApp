@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 package com.limuealimi.newsapp.data.network
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -23,6 +21,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.given
 
+@ExperimentalCoroutinesApi
 class ArticlesPagingSourceTest {
 
     @get:Rule

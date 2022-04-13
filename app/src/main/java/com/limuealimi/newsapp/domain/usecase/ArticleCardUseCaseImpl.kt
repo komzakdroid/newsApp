@@ -1,5 +1,6 @@
 package com.limuealimi.newsapp.domain.usecase
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import com.limuealimi.newsapp.data.model.Article
@@ -13,8 +14,7 @@ class ArticleCardUseCaseImpl(
     private val dispatchers: DispatcherProvider = DefaultDispatcherProvider()
 ) : ArticleCardUseCase {
     override suspend fun loadSearchedArticleData(query: String): LiveData<PagingData<Article>> {
-        var result: LiveData<PagingData<Article>>
-        withContext(dispatchers.default()) { result = repository.getArticles(query) }
-        return result
+        Log.d("usecase_query", "loadSearchedArticleData: $query")
+        return withContext(dispatchers.default()) { repository.getArticles(query) }
     }
 }
