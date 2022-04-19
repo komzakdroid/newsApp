@@ -1,18 +1,15 @@
 package com.limuealimi.newsapp.presentation.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.limuealimi.newsapp.R
 import com.limuealimi.newsapp.databinding.FragmentHomeBinding
 import com.limuealimi.newsapp.presentation.main.MainActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
@@ -37,7 +34,6 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
@@ -56,14 +52,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.articleList.observe(viewLifecycleOwner) {
-                if(it != null){Log.d("TAG", "initObservers:$it ")
-                    adapter.submitData(lifecycle, it)}
-
-            }
+        viewModel.articleList.observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
         }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -78,13 +71,13 @@ class HomeFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+                //viewModel.updateQuery(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isNotEmpty()) {
-                    viewModel.updateQuery(newText)
-                }
+                viewModel.updateQuery(newText)
+                initObservers()
                 return false
             }
         })

@@ -11,7 +11,6 @@ import com.limuealimi.newsapp.data.network.api.ApiService
 import com.limuealimi.newsapp.data.network.model.ArticleResponseDTO
 import com.limuealimi.newsapp.utils.toArticle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -20,6 +19,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.given
+import retrofit2.Response
 
 @ExperimentalCoroutinesApi
 class ArticlesPagingSourceTest {
@@ -37,6 +37,7 @@ class ArticlesPagingSourceTest {
     companion object {
         private val fixture = kotlinFixture {
             nullabilityStrategy(NeverNullStrategy)
+
         }
         val articlesResponse = ArticleResponseDTO(
             "200",
@@ -48,27 +49,10 @@ class ArticlesPagingSourceTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
         articlesPagingSource = ArticlesPagingSource(api, "Android")
     }
 
-    @Test
-    fun `articles paging source load = failure - http error`() = runTest {
-        val error = RuntimeException("404", Throwable())
-        given(api.everything()).willThrow(error)
-
-        val expectedResult = PagingSource.LoadResult.Error<Int, Article>(error)
-
-        assertEquals(
-            expectedResult, articlesPagingSource.load(
-                PagingSource.LoadParams.Refresh(
-                    key = 0,
-                    loadSize = 1,
-                    placeholdersEnabled = false
-                )
-            )
-        )
-    }
 
     @Test
     fun `articles paging source load = failure - received null`() = runTest {
@@ -88,8 +72,8 @@ class ArticlesPagingSourceTest {
     }
 
     @Test
-    fun `articles paging source refresh = success`() = runBlockingTest {
-        given(api.everything().body()).willReturn(articlesResponse)
+    fun `articles paging source refresh = success`() = runTest {
+        given(api.everything()).willReturn(Response.success(articlesResponse))
 
         val expectedResult = PagingSource.LoadResult.Page(
             data = articlesResponse.articles.map { it.toArticle() },
@@ -109,8 +93,8 @@ class ArticlesPagingSourceTest {
     }
 
     @Test
-    fun `reviews paging source append = success`() = runBlockingTest {
-        given(api.everything().body()).willReturn(articlesResponse)
+    fun `reviews paging source append = success`() = runTest {
+        given(api.everything()).willReturn(Response.success(articlesResponse))
         val expectedResult = PagingSource.LoadResult.Page(
             data = articlesResponse.articles.map { it.toArticle() },
             prevKey = 1,
@@ -128,8 +112,8 @@ class ArticlesPagingSourceTest {
     }
 
     @Test
-    fun `articles paging source prepend = success`() = runBlockingTest {
-        given(api.everything().body()).willReturn(articlesResponse)
+    fun `articles paging source prepend = success`() = runTest {
+        given(api.everything()).willReturn(Response.success(articlesResponse))
         val expectedResult = PagingSource.LoadResult.Page(
             data = articlesResponse.articles.map { it.toArticle() },
             prevKey = null,

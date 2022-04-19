@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'org.jetbrains.kotlin.kapt'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -49,6 +49,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Room components
+    def roomVersion = '2.4.2'
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
     //Size views
     implementation "com.intuit.sdp:sdp-android:1.0.6"
@@ -118,6 +124,7 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+    //testImplementation 'org.mockito:mockito-inline:3.11.1'
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
     testImplementation "com.appmattus.fixture:fixture:1.2.0"
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver

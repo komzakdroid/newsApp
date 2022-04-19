@@ -1,44 +1,35 @@
-package com.limuealimi.newsapp.data.repository
+package com.limuealimi.newsapp.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.paging.PagingData
 import androidx.paging.map
 import com.appmattus.kotlinfixture.decorator.nullability.NeverNullStrategy
 import com.appmattus.kotlinfixture.decorator.nullability.nullabilityStrategy
 import com.appmattus.kotlinfixture.kotlinFixture
 import com.limuealimi.newsapp.MainCoroutineRule
-import com.limuealimi.newsapp.data.network.api.ApiService
-import com.limuealimi.newsapp.data.network.model.ArticleResponseDTO
-import com.limuealimi.newsapp.utils.toArticle
+import com.limuealimi.newsapp.data.model.Article
+import com.limuealimi.newsapp.data.repository.MainRepository
+import com.limuealimi.newsapp.utils.DefaultDispatcherProvider
 import com.limuealimi.newsapp.wheneverBlocking
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
-import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-class MainRepositoryImplTest {
-    /**
-    TODO:
-     * How to mock API service?
-     * How to check methods with mock response?
-     * How to mock Repository and call api service with error result?
-     * How to test and check LiveData?
-     */
-
+class ArticleCardUseCaseImplTest {
     @get:Rule
     val mockitoRule: MockitoRule = MockitoJUnit.rule()
 
@@ -48,13 +39,12 @@ class MainRepositoryImplTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private lateinit var subject: ArticleCardUseCaseImpl
+
     private val testDispatcher = TestCoroutineDispatcher()
 
-    @InjectMocks
-    private lateinit var subject: MainRepositoryImpl
-
     @Mock
-    private lateinit var apiService: ApiService
+    private lateinit var repository: MainRepository
 
     private val fixture = kotlinFixture {
         nullabilityStrategy(NeverNullStrategy)
@@ -64,36 +54,37 @@ class MainRepositoryImplTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         MockitoAnnotations.openMocks(this)
+        subject = ArticleCardUseCaseImpl(
+            repository = repository,
+            dispatchers = DefaultDispatcherProvider()
+        )
     }
-
 
     @After
     fun tearDown() {
+        Dispatchers.resetMain()
         testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
-    fun `getArticles in api service getting called one time`() {
+    fun `request success returns data of the articles`() {
         runBlocking {
-            wheneverBlocking { apiService.everything() }.thenReturn(fixture())
-            subject.getArticles("q").collectLatest { }
-            verify(apiService, times(1)).everything()
-        }
-    }
-
-    @Test
-    fun `getArticles passes correct data`() {
-        runBlocking {
-            val articleResponse: Response<ArticleResponseDTO> = fixture()
-            wheneverBlocking { apiService.everything() }.thenReturn(articleResponse)
-            subject.getArticles("q").collectLatest {
-                it.map { it ->
-                    articleResponse.body()?.articles!!.forEach { i ->
-                        assert(it == i.toArticle())
-                    }
+            val articleList = ArrayList<Article>()
+            val articles: Flow<PagingData<Article>> = fixture() { 2 }
+            wheneverBlocking { repository.getArticles("q") }.thenReturn(articles)
+            subject.loadSearchedArticleData("q").collectLatest { it ->
+                it.map { article ->
+                    articleList.add(article)
                 }
             }
+
+            articles.collectLatest { it ->
+                it.map { article ->
+                    articleList.add(article)
+                }
+            }
+            assert(articleList[0] == articleList[1])
+            //assertEquals(articleList[0], articleList[1])
         }
     }
-
 }

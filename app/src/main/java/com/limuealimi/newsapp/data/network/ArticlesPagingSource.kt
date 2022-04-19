@@ -1,6 +1,5 @@
 package com.limuealimi.newsapp.data.network
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.limuealimi.newsapp.data.model.Article
@@ -22,7 +21,6 @@ class ArticlesPagingSource(
             val pageSize = params.loadSize.coerceAtMost(ApiService.MAX_PAGE_SIZE)
             val response = apiService.everything(query, pageNumber, pageSize)
 
-            Log.d("TAGofPaging", "load: ${response.body()}")
             return if (response.isSuccessful) {
                 val articles = response.body()!!.articles.map { it.toArticle() }
                 val nextPageNumber = if (articles.isEmpty()) null else pageNumber + 1
