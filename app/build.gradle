@@ -54,7 +54,6 @@ dependencies {
     def roomVersion = '2.4.2'
     implementation "androidx.room:room-ktx:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
-    androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
     //Size views
     implementation "com.intuit.sdp:sdp-android:1.0.6"
@@ -73,16 +72,9 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
     // Navigation Graph
     implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
-    // Jetpack Compose
-    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
-
     //okhttp
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
-
-    //glide
-    implementation "com.github.bumptech.glide:glide:4.12.0"
-    kapt "com.github.bumptech.glide:compiler:4.12.0"
 
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
@@ -108,7 +100,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:4.7.1"
 
     //paging 3
-    implementation "androidx.paging:paging-runtime:3.1.1"
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
 
 
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.6'
@@ -124,10 +116,9 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
-    //testImplementation 'org.mockito:mockito-inline:3.11.1'
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
     testImplementation "com.appmattus.fixture:fixture:1.2.0"
-    // https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
 
     testImplementation 'com.github.javafaker:javafaker:0.18'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
@@ -135,7 +126,7 @@ dependencies {
     // Koin Test features
     testImplementation "io.insert-koin:koin-test:$koin_version"
     // alternatively - without Android dependencies for tests
-    testImplementation("androidx.paging:paging-common:3.1.1")
+    testImplementation("androidx.paging:paging-common-ktx:3.1.1")
 
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

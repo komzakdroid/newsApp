@@ -71,13 +71,11 @@ class HomeFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                //viewModel.updateQuery(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 viewModel.updateQuery(newText)
-                initObservers()
                 return false
             }
         })

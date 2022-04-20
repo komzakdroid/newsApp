@@ -16,19 +16,16 @@ class ArticlesPagingSource(
             return LoadResult.Page(emptyList(), prevKey = null, nextKey = null)
         }
 
-        try {
+        return try {
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val pageSize = params.loadSize.coerceAtMost(ApiService.MAX_PAGE_SIZE)
             val response = apiService.everything(query, pageNumber, pageSize)
 
-            return if (response.isSuccessful) {
-                val articles = response.body()!!.articles.map { it.toArticle() }
-                val nextPageNumber = if (articles.isEmpty()) null else pageNumber + 1
-                val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
-                LoadResult.Page(articles, prevPageNumber, nextPageNumber)
-            } else {
-                LoadResult.Error(HttpException(response))
-            }
+            val articles = response.articles.map { it.toArticle() }
+            val nextPageNumber = if (articles.isEmpty()) null else pageNumber + 1
+            val prevPageNumber = if (pageNumber > 1) pageNumber - 1 else null
+            LoadResult.Page(articles, prevPageNumber, nextPageNumber)
+
         } catch (e: HttpException) {
             return LoadResult.Error(e)
         } catch (e: Exception) {

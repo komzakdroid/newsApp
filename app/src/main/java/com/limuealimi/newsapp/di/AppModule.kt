@@ -13,11 +13,10 @@ import com.limuealimi.newsapp.data.repository.MainRepositoryImpl
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCase
 import com.limuealimi.newsapp.domain.usecase.ArticleCardUseCaseImpl
 import com.limuealimi.newsapp.presentation.home.HomeViewModel
-import com.limuealimi.newsapp.utils.DefaultDispatcherProvider
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -66,7 +65,7 @@ val singletonModule = module {
         MainRepositoryImpl(get<ApiService>())
     }
     single<ArticleCardUseCase> {
-        ArticleCardUseCaseImpl(get<MainRepository>(), DefaultDispatcherProvider())
+        ArticleCardUseCaseImpl(get<MainRepository>(), Dispatchers.Default)
     }
 }
 
