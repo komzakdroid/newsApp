@@ -1,6 +1,5 @@
 package com.limuealimi.newsapp.data.model
 
-
 data class Article(
     val source: Source?,
     val title: String?,

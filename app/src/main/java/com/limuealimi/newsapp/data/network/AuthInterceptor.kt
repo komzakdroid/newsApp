@@ -10,7 +10,6 @@ class AuthInterceptor(private val apiKey: String) : Interceptor {
             .build()
         return chain.proceed(request)
     }
-
     private companion object {
         private const val API_KEY_HEADER = "X-Api-Key"
     }

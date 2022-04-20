@@ -24,7 +24,8 @@ interface ApiService {
         @Query("to") to: Date? = null,
         @Query("language") language: Language? = null,
         @Query("sortBy") sortBy: SortBy? = null,
-    ): Response<ArticleResponseDTO>
+        @Query("apiKey") API_KEY: String = "a55a9aeb1efd47a6aebc2992e7a0d686"
+    ): ArticleResponseDTO
 
     enum class Language {
         ar,

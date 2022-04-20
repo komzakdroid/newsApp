@@ -1,18 +1,17 @@
 package com.limuealimi.newsapp.domain.usecase
 
+import androidx.paging.PagingData
 import com.limuealimi.newsapp.data.model.Article
 import com.limuealimi.newsapp.data.repository.MainRepository
-import com.limuealimi.newsapp.utils.DefaultDispatcherProvider
-import com.limuealimi.newsapp.utils.DispatcherProvider
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class ArticleCardUseCaseImpl(
     private val repository: MainRepository,
-    private val dispatchers: DispatcherProvider = DefaultDispatcherProvider()
+    private val dispatcher: CoroutineContext
 ) : ArticleCardUseCase {
-    override suspend fun loadArticlesData(pageNumber: Int): Result<List<Article>> {
-        return withContext(dispatchers.default()) {
-            repository.getArticles(pageNumber)
-        }
+    override suspend fun loadSearchedArticleData(query: String): Flow<PagingData<Article>> {
+        return withContext(dispatcher) { repository.getArticles(query) }
     }
 }

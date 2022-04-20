@@ -1,10 +1,11 @@
 package com.limuealimi.newsapp.domain.usecase
 
+import androidx.paging.PagingData
 import com.limuealimi.newsapp.data.model.Article
+import kotlinx.coroutines.flow.Flow
 
 interface ArticleCardUseCase {
-    suspend fun loadArticlesData(
-        pageNumber: Int
-    ): Result<List<Article>>
-
+    suspend fun loadSearchedArticleData(
+        query: String
+    ): Flow<PagingData<Article>>
 }

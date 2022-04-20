@@ -1,17 +1,29 @@
 package com.limuealimi.newsapp.data.repository
 
-import com.limuealimi.newsapp.data.network.api.ApiService
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.limuealimi.newsapp.data.model.Article
-import java.lang.Exception
+import com.limuealimi.newsapp.data.network.ArticlesPagingSource
+import com.limuealimi.newsapp.data.network.api.ApiService
+import kotlinx.coroutines.flow.Flow
 
 class MainRepositoryImpl(
     private val apiService: ApiService
 ) : MainRepository {
-    override suspend fun getArticles(pageNumber: Int): Result<List<Article>> {
-        return try {
-            Result.success(apiService.getArticles(pageNumber = pageNumber).articles.map { it.mapToArticleDTO() })
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override suspend fun getArticles(query: String): Flow<PagingData<Article>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                ArticlesPagingSource(apiService, query)
+            }
+        ).flow
+    }
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 50
     }
 }
